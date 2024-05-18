@@ -6,6 +6,7 @@ const RegistrationForm = () => {
     lastName: '',
     email: '',
     phone: '',
+    password: '',
   });
 
   const handleChange = (e) => {
@@ -26,6 +27,10 @@ const RegistrationForm = () => {
 
       if (!response.ok) {
         throw new Error('Failed to submit form');
+      }
+
+      if (response.status === 201) {
+        window.location.href = '/authorization'; // Перенаправление на страницу success
       }
 
       const data = await response.json();
