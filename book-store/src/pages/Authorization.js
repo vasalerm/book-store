@@ -26,8 +26,9 @@ const AuthorizationPage = () => {
         throw new Error('Failed to authenticate');
       }
 
-      // Добавьте здесь логику для обработки успешной аутентификации,
-      // например, перенаправление на защищенную страницу.
+      if (response.status === 200) {
+        window.location.href = '/test'; 
+      }
 
     } catch (error) {
       console.error('Error:', error);
