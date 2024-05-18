@@ -16,7 +16,7 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost/file.php', {
+      const response = await fetch('http://localhost/registration.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
