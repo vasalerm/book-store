@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS authors (
   id SERIAL PRIMARY KEY,
   first_name VARCHAR(45) NOT NULL,
-  middle_name VARCHAR(45) NOT NULL,
+  middle_name VARCHAR(45),
   last_name VARCHAR(45) NOT NULL,
   UNIQUE (id)
 );
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS authors (
 CREATE TABLE IF NOT EXISTS books (
   id SERIAL NOT NULL,
   name VARCHAR(45),
-  bookscol VARCHAR(45),
   authors_id INT NOT NULL,
+  cover_image BYTEA,
   PRIMARY KEY (id, authors_id),
   UNIQUE (id),
   CONSTRAINT fk_books_authors1 FOREIGN KEY (authors_id)
