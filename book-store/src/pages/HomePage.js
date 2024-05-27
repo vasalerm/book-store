@@ -11,6 +11,8 @@ const Homepage = () => {
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
+    const [tempQuantity, setTempQuantity] = useState(0); // Локальное состояние для временного хранения количества книг в NumberBox
+
     useEffect(() => {
         fetch('http://localhost/book.php')
             .then(response => {
@@ -35,35 +37,27 @@ const Homepage = () => {
 
         if (bookIndex > -1) {
             // Если книга уже в корзине, увеличиваем количество
-            updatedCart[bookIndex].quantity += 1;
+            updatedCart[bookIndex].quantity += tempQuantity; // Используем временное значение из NumberBox
         } else {
-            // Иначе добавляем книгу с количеством 1
-            updatedCart.push({ ...book, quantity: 1 });
+            // Иначе добавляем книгу с количеством из NumberBox
+            updatedCart.push({ ...book, quantity: tempQuantity });
         }
 
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+        // Сбрасываем временное значение количества после добавления в корзину
+        setTempQuantity(0);
+    };
+
+    const removeFromCart = (bookId) => {
+        const updatedCart = cart.filter(item => item.book_id !== bookId);
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
-    const updateCartQuantity = (book, quantity) => {
-        const updatedCart = [...cart];
-        const bookIndex = updatedCart.findIndex(item => item.book_id === book.book_id);
-
-        if (bookIndex > -1) {
-            // Если книга уже в корзине, обновляем количество
-            updatedCart[bookIndex].quantity = quantity;
-
-            // Удаляем книгу из корзины, если количество равно 0
-            if (quantity === 0) {
-                updatedCart.splice(bookIndex, 1);
-            }
-        } else if (quantity > 0) {
-            // Иначе добавляем книгу с заданным количеством
-            updatedCart.push({ ...book, quantity: quantity });
-        }
-
-        setCart(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
+    const updateTempQuantity = (value) => {
+        setTempQuantity(value); // Обновляем временное значение количества при изменении в NumberBox
     };
 
     const getCartQuantity = (bookId) => {
@@ -95,10 +89,13 @@ const Homepage = () => {
                         <div className="cart-quantity">
                             <NumberBox
                                 max={book.quantity}
-                                value={getCartQuantity(book.book_id)}
+                                value={tempQuantity} // Используем временное значение
                                 min={0}
-                                onValueChanged={(e) => updateCartQuantity(book, e.value)}
+                                onValueChanged={(e) => updateTempQuantity(e.value)} // Обновляем временное значение при изменении
                             />
+                        </div>
+                        <div className='button'>
+                            <button onClick={() => removeFromCart(book.book_id)}>Удалить из корзины</button>
                         </div>
                     </div>
                 ))}
