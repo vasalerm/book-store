@@ -94,6 +94,7 @@ const Homepage = () => {
                         </div>
                         <div className="cart-quantity">
                             <NumberBox
+                                max={book.quantity}
                                 value={getCartQuantity(book.book_id)}
                                 min={0}
                                 onValueChanged={(e) => updateCartQuantity(book, e.value)}

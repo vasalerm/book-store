@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NumberBox, Button} from 'devextreme-react'
 
 const CartPage = () => {
     const [cart, setCart] = useState(() => {
@@ -9,6 +10,13 @@ const CartPage = () => {
     const calculateTotal = () => {
         return cart.reduce((total, item) => total + item.price * item.quantity, 0);
     };
+
+    const removeItem = (bookIdToRemove) => {
+        const updatedCart = cart.filter(item => item.book_id !== bookIdToRemove);
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+    };
+    
 
     const handleOrder = async () => {
         try {
@@ -34,6 +42,22 @@ const CartPage = () => {
         }
     };
 
+    const updateQuantity = (bookId, newQuantity) => {
+        console.log(bookId)
+        console.log(newQuantity)
+        const updatedCart = cart.map(item => {
+            if (item.book_id === bookId) {
+                return { ...item, quantity: newQuantity };
+            }
+            console.log(cart)
+            return item;
+        });
+    
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+    };
+    
+
     if (cart.length === 0) return <p>Корзина пуста</p>;
 
     return (
@@ -45,7 +69,17 @@ const CartPage = () => {
                         <h3>{item.book_name}</h3>
                         <p>Автор: {`${item.author_first_name} ${item.author_middle_name || ''} ${item.author_last_name}`}</p>
                         <p>Цена: {item.price} ₽</p>
-                        <p>Количество: {item.quantity}</p>
+                        <NumberBox
+                            min={0}
+                            showSpinButtons={true}
+                            value={item.quantity}
+                            onValueChange={(e) => {
+                                updateQuantity(item.book_id, e)
+                            }                        
+                                
+                            }
+                        ></NumberBox>
+                         <Button onClick={() => removeItem(item.book_id)}>Удалить</Button>
                     </li>
                 ))}
             </ul>
