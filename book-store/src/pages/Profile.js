@@ -117,11 +117,14 @@ const Profile = () => {
             <h1>{user.first_name} {user.last_name}</h1>
             <p>Email: {user.email}</p>
             <p>Phone: {user.phone}</p>
-            <DataGrid dataSource={orders}
-            onRowClick={onRowClick}>
-                <Column dataField="order_id" caption="Order ID" />
-                <Column dataField="order_time" caption="Order Time" dataType="datetime" />
-                <Column dataField="total_amount" caption="Total Amount" format={{ type: 'currency', currency: 'RUB' }} />
+            <DataGrid
+                dataSource={orders}
+                onRowClick={onRowClick}
+                height={300}
+                width={600}>            
+                <Column dataField="order_id" caption="Номер заказа" />
+                <Column dataField="order_time" caption="Время заказа" dataType="datetime" />
+                <Column dataField="total_amount" caption="Сумма заказа" dataType="number" />
                 <MasterDetail enabled={false} autoExpandAll={true} render={renderDetail} />
             </DataGrid>
         </div>
