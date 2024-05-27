@@ -41,20 +41,20 @@ const RegistrationForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='form-container'>
       <input
         type="text"
         name="firstName"
         value={formData.firstName}
         onChange={handleChange}
-        placeholder="First Name"
+        placeholder="Имя"
       />
       <input
         type="text"
         name="lastName"
         value={formData.lastName}
         onChange={handleChange}
-        placeholder="Last Name"
+        placeholder="Фамилия"
       />
       <input
         type="email"
@@ -68,14 +68,14 @@ const RegistrationForm = () => {
         name="phone"
         value={formData.phone}
         onChange={handleChange}
-        placeholder="Phone"
+        placeholder="Телефон"
       />
       <input
         type="password"
         name="password"
         value={formData.password}
         onChange={handleChange}
-        placeholder="Phone"
+        placeholder="Пароль"
       
       />
       <button type="submit">Register</button>

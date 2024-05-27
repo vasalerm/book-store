@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             http_response_code(401);
             echo json_encode(array("error" => "Invalid email or password"));
         } else {
-            // Успешная аутентификация, отправьте ответ с данными пользователя
             http_response_code(200);
             echo json_encode(array("success" => "Authenticated successfully", "user" => $user));
         }

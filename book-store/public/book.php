@@ -21,7 +21,6 @@ try {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $input = json_decode(file_get_contents("php://input"), true);
 
-    // Извлекаем данные из тела запроса
     $book_name = $input['book_name'];
     $author_id = $input['author_id'];
     $price = $input['price'];
@@ -34,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     try {
-        // Вставка данных о книге
         $stmt = $pdo->prepare("INSERT INTO books (name, authors_id) VALUES (:name, :authors_id)");
         $stmt->bindParam(':name', $book_name);
         $stmt->bindParam(':authors_id', $author_id);
@@ -50,6 +48,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
 
         echo json_encode(array("success" => "Book and stock added successfully"));
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(array("error" => "Database error: " . $e->getMessage()));
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    try {
+        $stmt = $pdo->query("
+            SELECT 
+                books.id AS book_id, 
+                books.name AS book_name, 
+                authors.first_name AS author_first_name, 
+                authors.middle_name AS author_middle_name, 
+                authors.last_name AS author_last_name, 
+                stock.price, 
+                stock.quantity 
+            FROM books 
+            JOIN authors ON books.authors_id = authors.id 
+            JOIN stock ON books.id = stock.books_id
+        ");
+        $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($books);
     } catch (PDOException $e) {
         http_response_code(500);
         echo json_encode(array("error" => "Database error: " . $e->getMessage()));

@@ -36,3 +36,176 @@
     transform: rotate(360deg);
   }
 }
+
+.book {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.book-list {
+  padding-top: 20px;
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.book-card {
+  padding: 1px;
+  border-radius: 8px;
+  width: calc(25% - 20px); /* Ширина каждой карточки - 25% ширины родительского контейнера минус отступы */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-card button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Анимация изменения цвета фона */
+}
+
+.book-card button:hover {
+  background-color: #0056b3; /* Цвет фона при наведении */
+}
+
+/* Анимация нажатия кнопки */
+.book-card button:active {
+  transform: translateY(1px); /* Сдвиг кнопки при нажатии */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень при нажатии */
+}
+
+.book-card .button{
+  display: flex;
+  justify-content: center;
+  padding-bottom: 5px;
+}
+
+
+
+
+.book-card h3 {
+  margin: 0 0 10px;
+}
+
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+}
+
+nav {
+  padding-right: 5px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: right;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.cart-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.cart-page h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.cart-page ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.cart-page ul li {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.cart-page ul li h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.cart-page ul li p {
+  margin: 5px 0;
+}
+
+.cart-page button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-page button:hover {
+  background-color: #0056b3;
+}
+
+.search{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-container button {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background-color: #0056b3;
+}

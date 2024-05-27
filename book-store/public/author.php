@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $authors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if ($authors === false) {
-            $authors = []; // Если массив пуст, установим его в пустой массив
+            $authors = [];
         }
 
         echo json_encode(array("success" => "Authors fetched successfully", "authors" => $authors));

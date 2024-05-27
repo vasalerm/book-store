@@ -32,11 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Хэширование пароля
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     try {
-        // Начало транзакции
         $pdo->beginTransaction();
 
         $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
@@ -54,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':password' => $hashedPassword
         ));
 
-        // Завершение транзакции
         $pdo->commit();
 
         http_response_code(201);
