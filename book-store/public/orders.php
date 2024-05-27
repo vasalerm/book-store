@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Access-Control-Allow-Methods: DELETE, OPTIONS, POST, GET");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
 
@@ -111,9 +111,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         http_response_code(400);
         echo json_encode(array("error" => "Token not provided"));
     }
-} else {
-    http_response_code(405);
-    echo json_encode(array("error" => "Method not allowed"));
 }
 
 
