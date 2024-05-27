@@ -10,6 +10,7 @@ import AdminPage from './pages/AdminPage';
 import HomePage from './pages/HomePage';
 import CartPage from './pages/CartPage';
 import Header from './pages/Header';
+import Profile from './pages/Profile';
 
 const App = () => {
     const [cart, setCart] = useState([]);
@@ -28,6 +29,7 @@ const App = () => {
                 <Route path="/home" element={<HomePage addToCart={addToCart} />} />
                 <Route path="/cart" element={<CartPage cart={cart} />} />
                 <Route path="/" element={<HomePage addToCart={addToCart} />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
         </BrowserRouter>
     );
