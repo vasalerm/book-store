@@ -10,13 +10,28 @@ const CartPage = () => {
         return cart.reduce((total, item) => total + item.price * item.quantity, 0);
     };
 
-    const handleOrder = () => {
-        // Логика оформления заказа
-        console.log('Order placed:', cart);
-        // Очистка корзины
-        localStorage.removeItem('cart');
-        setCart([]);
-        alert('Заказ оформлен');
+    const handleOrder = async () => {
+        try {
+            const response = await fetch('http://localhost/orders.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: localStorage.getItem('token'), books: cart }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to place order');
+            }
+
+            // Очистка корзины
+            localStorage.removeItem('cart');
+            setCart([]);
+            alert('Заказ оформлен');
+        } catch (error) {
+            console.error('Error placing order:', error);
+            alert('Произошла ошибка при оформлении заказа');
+        }
     };
 
     if (cart.length === 0) return <p>Корзина пуста</p>;

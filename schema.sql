@@ -58,21 +58,15 @@ CREATE TABLE IF NOT EXISTS stock (
     ON UPDATE NO ACTION
 );
 
-CREATE TABLE IF NOT EXISTS Purchase_history (
-  id SERIAL NOT NULL,
-  time TIMESTAMP(5) NOT NULL,
-  size INT NOT NULL,
-  stock_books_id INT NOT NULL,
-  users_id INT NOT NULL,
-  users_roles_id INT NOT NULL,
-  PRIMARY KEY (id, stock_books_id, users_id, users_roles_id),
-  UNIQUE (id),
-  CONSTRAINT fk_Purchase_history_stock1 FOREIGN KEY (stock_books_id)
-    REFERENCES stock (books_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT fk_Purchase_history_users1 FOREIGN KEY (users_id, users_roles_id)
-    REFERENCES users (id, roles_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+CREATE TABLE IF NOT EXISTS Orders (
+  id SERIAL PRIMARY KEY,
+  token VARCHAR(255) NOT NULL,
+  time TIMESTAMP(5) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Order_details (
+  order_id INT NOT NULL,
+  book_id INT NOT NULL,
+  quantity INT NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE CASCADE
 );
