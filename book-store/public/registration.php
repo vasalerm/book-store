@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    $token = bin2hex(random_bytes(16)); // Генерация уникального токена
 
     try {
         $pdo->beginTransaction();
@@ -43,19 +44,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             throw new Exception("Email already exists", 409);
         }
 
-        $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, phone, password) VALUES (:firstName, :lastName, :email, :phone, :password)");
+        $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, phone, password, token) VALUES (:firstName, :lastName, :email, :phone, :password, :token)");
         $stmt->execute(array(
             ':firstName' => $firstName,
             ':lastName' => $lastName,
             ':email' => $email,
             ':phone' => $phone,
-            ':password' => $hashedPassword
+            ':password' => $hashedPassword,
+            ':token' => $token
         ));
 
         $pdo->commit();
 
         http_response_code(201);
-        echo json_encode(array("success" => "User registered successfully"));
+        echo json_encode(array("success" => "User registered successfully", "token" => $token));
     } catch (PDOException $e) {
         $pdo->rollBack();
         if ($e->getCode() == 23505) {

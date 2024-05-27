@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AuthorizationPage = () => {
+const Authorization = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -26,8 +26,13 @@ const AuthorizationPage = () => {
         throw new Error('Failed to authenticate');
       }
 
-      if (response.status === 200) {
-        window.location.href = '/test'; 
+      const data = await response.json();
+
+      if (response.status === 200 && data.token) {
+        localStorage.setItem('token', data.token);
+        window.location.href = '/'; 
+      } else {
+        throw new Error('Failed to retrieve token');
       }
 
     } catch (error) {
@@ -61,4 +66,4 @@ const AuthorizationPage = () => {
   );
 };
 
-export default AuthorizationPage;
+export default Authorization;

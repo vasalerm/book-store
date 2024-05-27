@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode(array("error" => "Invalid email or password"));
         } else {
             http_response_code(200);
-            echo json_encode(array("success" => "Authenticated successfully", "user" => $user));
+            echo json_encode(array("success" => "Authenticated successfully", "token" => $user['token']));
         }
     } catch (PDOException $e) {
         http_response_code(500);

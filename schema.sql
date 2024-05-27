@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(90) UNIQUE NOT NULL,
   phone VARCHAR(45),
   password VARCHAR(255) NOT NULL,
+  token VARCHAR(255) UNIQUE,
   roles_id INT DEFAULT 1,
   PRIMARY KEY (id),
   CONSTRAINT fk_users_roles1 FOREIGN KEY (roles_id)
