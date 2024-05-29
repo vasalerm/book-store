@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextBox, NumberBox } from 'devextreme-react';
+import { TextBox, NumberBox, Button, SelectBox } from 'devextreme-react';
 
 const Homepage = () => {
     const [books, setBooks] = useState([]);
@@ -10,26 +10,39 @@ const Homepage = () => {
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
+    const [searchText, setSearchText] = useState(null);
+    const [paramForSearch, setParamForSearch] = useState([]);
+    
 
     const [tempQuantity, setTempQuantity] = useState(0); // Локальное состояние для временного хранения количества книг в NumberBox
 
-    useEffect(() => {
+    const searchParam = [
+        {id: 'author', text: 'Автор'},
+        {id: 'title', text: 'Название'},
+    ]
+
+    const fetchBooks = () => {
+        setLoading(true);
         fetch('http://localhost/book.php')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                setBooks(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                setError(error);
-                setLoading(false);
-            });
-    }, []);
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+            setBooks(data);
+            setLoading(false);
+          })
+          .catch(error => {
+            setError(error);
+            setLoading(false);
+          });
+      };
+
+    useEffect(() => {
+        fetchBooks();
+      }, []);
 
     const addToCart = (book) => {
         const updatedCart = [...cart];
@@ -65,16 +78,75 @@ const Homepage = () => {
         return bookInCart ? bookInCart.quantity : 0;
     };
 
+
+    const searchBook = (e) => {
+        e.preventDefault();
+    
+        // Создаем объект с данными для отправки на сервер
+        const searchData = {
+            search_field: paramForSearch,
+            search_query: searchText
+        };
+    
+        // Опции запроса
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(searchData)
+        };
+    
+        fetch('http://localhost/search.php', requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Обработка полученных данных
+                setBooks(data)
+            })
+            .catch(error => {
+                // Обработка ошибок
+                console.error('There was an error!', error);
+            });
+    }
+    
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error loading books: {error.message}</p>;
 
     return (
         <div className='book'>
+            
             <div className="search">
+                <form onSubmit={searchBook}>
+                
                 <TextBox
                     placeholder="Поиск..."
                     width={'500px'}
-                /> 
+                    onValueChange={(e) => setSearchText(e)}
+                />
+                <SelectBox
+                    dataSource={searchParam}
+                    displayExpr="text"
+                    valueExpr="id"
+                    defaultValue="title"
+                    onValueChange={(e) => {
+                        setParamForSearch(e)
+                    }}>
+
+                </SelectBox>
+                <Button
+                
+                type="save"
+                useSubmitBehavior={true}>Поиск</Button> 
+                </form>
+                <Button
+                onClick={fetchBooks}>Сбросить</Button>
+                
             </div>
             <div className="book-list">
                 {books.map(book => (
