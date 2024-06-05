@@ -48,6 +48,7 @@ const RegistrationForm = () => {
         value={formData.firstName}
         onChange={handleChange}
         placeholder="Имя"
+        required
       />
       <input
         type="text"
@@ -55,6 +56,7 @@ const RegistrationForm = () => {
         value={formData.lastName}
         onChange={handleChange}
         placeholder="Фамилия"
+        required
       />
       <input
         type="email"
@@ -62,6 +64,7 @@ const RegistrationForm = () => {
         value={formData.email}
         onChange={handleChange}
         placeholder="Email"
+        required
       />
       <input
         type="text"
@@ -69,6 +72,7 @@ const RegistrationForm = () => {
         value={formData.phone}
         onChange={handleChange}
         placeholder="Телефон"
+        required
       />
       <input
         type="password"
@@ -76,6 +80,7 @@ const RegistrationForm = () => {
         value={formData.password}
         onChange={handleChange}
         placeholder="Пароль"
+        required
       
       />
       <button type="submit">Register</button>
