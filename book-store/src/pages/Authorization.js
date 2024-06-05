@@ -1,10 +1,13 @@
+import { Button } from 'devextreme-react';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Authorization = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,7 +46,7 @@ const Authorization = () => {
   return (
     <div>
       <h2>Authorization</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='form-container'>
         <input
           type="email"
           name="email"
@@ -57,10 +60,17 @@ const Authorization = () => {
           name="password"
           value={formData.password}
           onChange={handleChange}
-          placeholder="Password"
+          placeholder="Пароль"
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Войти</button>
+        <button
+        type="button"
+        style={{marginTop: '10px'}}
+        onClick={() => {navigate('/registration')}}
+        >
+          Регистрация
+        </button>
       </form>
     </div>
   );
