@@ -89,6 +89,22 @@
   padding-bottom: 5px;
 }
 
+.cart-quantity{
+  display: flex;
+  align-items: center;
+}
+
+.cart-quantity .button{
+  display: flex;
+  flex-wrap: wrap;
+  
+  
+}
+.cart-quantity button{
+  margin-bottom: 5px;
+}
+
+
 
 
 

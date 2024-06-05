@@ -12,14 +12,12 @@ const Homepage = () => {
     });
     const [searchText, setSearchText] = useState(null);
     const [paramForSearch, setParamForSearch] = useState('title');
-    
-
-    const [tempQuantity, setTempQuantity] = useState(1); // Локальное состояние для временного хранения количества книг в NumberBox
+    const [quantities, setQuantities] = useState({}); // Объект для хранения количества каждой книги
 
     const searchParam = [
         {id: 'author', text: 'Автор'},
         {id: 'title', text: 'Название'},
-    ]
+    ];
 
     const fetchBooks = () => {
         setLoading(true);
@@ -47,20 +45,24 @@ const Homepage = () => {
     const addToCart = (book) => {
         const updatedCart = [...cart];
         const bookIndex = updatedCart.findIndex(item => item.book_id === book.book_id);
+        const quantity = quantities[book.book_id] || 1;
 
         if (bookIndex > -1) {
             // Если книга уже в корзине, увеличиваем количество
-            updatedCart[bookIndex].quantity += tempQuantity; // Используем временное значение из NumberBox
+            updatedCart[bookIndex].quantity += quantity;
         } else {
-            // Иначе добавляем книгу с количеством из NumberBox
-            updatedCart.push({ ...book, quantity: tempQuantity });
+            // Иначе добавляем книгу с количеством из состояния
+            updatedCart.push({ ...book, quantity });
         }
 
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
 
-        // Сбрасываем временное значение количества после добавления в корзину
-        setTempQuantity(1);
+        // Сбрасываем значение количества после добавления в корзину
+        setQuantities(prevQuantities => ({
+            ...prevQuantities,
+            [book.book_id]: 1
+        }));
     };
 
     const removeFromCart = (bookId) => {
@@ -69,15 +71,17 @@ const Homepage = () => {
         localStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
-    const updateTempQuantity = (value) => {
-        setTempQuantity(value); // Обновляем временное значение количества при изменении в NumberBox
+    const updateQuantity = (bookId, value) => {
+        setQuantities(prevQuantities => ({
+            ...prevQuantities,
+            [bookId]: value
+        }));
     };
 
     const getCartQuantity = (bookId) => {
         const bookInCart = cart.find(item => item.book_id === bookId);
         return bookInCart ? bookInCart.quantity : 0;
     };
-
 
     const searchBook = (e) => {
         e.preventDefault();
@@ -106,24 +110,21 @@ const Homepage = () => {
             })
             .then(data => {
                 // Обработка полученных данных
-                setBooks(data)
+                setBooks(data);
             })
             .catch(error => {
                 // Обработка ошибок
                 console.error('There was an error!', error);
             });
-    }
-    
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error loading books: {error.message}</p>;
 
     return (
         <div className='book'>
-            
             <div className="search">
                 <form onSubmit={searchBook}>
-                
                     <TextBox
                         style={{marginRight: '5px'}}
                         placeholder="Поиск..."
@@ -137,25 +138,20 @@ const Homepage = () => {
                         valueExpr="id"
                         width={150}
                         defaultValue="title"
-                        onValueChange={(e) => {
-                            setParamForSearch(e)
-                        }}>
-
-                    </SelectBox>
+                        onValueChange={(e) => setParamForSearch(e)}
+                    />
                     <Button
                         style={{marginRight: '5px'}}
                         width={100}
                         type="save"
-                        useSubmitBehavior={true}>Поиск
-                    </Button> 
+                        useSubmitBehavior={true}
+                    >Поиск</Button> 
                     <Button
                         type="button"
                         width={100}
-                        onClick={fetchBooks}>Сбросить
-                    </Button>
-                        </form>
-              
-                
+                        onClick={fetchBooks}
+                    >Сбросить</Button>
+                </form>
             </div>
             <div className="book-list">
                 {books.map(book => (
@@ -164,20 +160,21 @@ const Homepage = () => {
                         <p>Автор: {`${book.author_first_name} ${book.author_middle_name || ''} ${book.author_last_name}`}</p>
                         <p>Цена: {book.price} ₽</p>
                         <p>Количество: {book.quantity - getCartQuantity(book.book_id)}</p>
-                       
                         <div className="cart-quantity">
                             <NumberBox
-                                width={100}
+                                width={150}
+                                height={50}
+                                showSpinButtons={true}
                                 max={book.quantity}
-                                value={tempQuantity} // Используем временное значение
+                                value={quantities[book.book_id] || 1} // Используем значение из состояния
                                 min={1}
-                                onValueChanged={(e) => updateTempQuantity(e.value)} // Обновляем временное значение при изменении
-                                
+                                onValueChanged={(e) => updateQuantity(book.book_id, e.value)} // Обновляем количество для конкретной книги
                             />
-                            <button onClick={() => addToCart(book)}>Добавить в корзину</button>
-                            <button onClick={() => removeFromCart(book.book_id)}>Удалить из корзины</button>
+                            <div className="button">
+                                <button onClick={() => addToCart(book)}>Добавить в корзину</button>
+                                <button onClick={() => removeFromCart(book.book_id)}>Удалить из корзины</button>
+                            </div>
                         </div>
-                       
                     </div>
                 ))}
             </div>
