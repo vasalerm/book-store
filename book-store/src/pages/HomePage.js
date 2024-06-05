@@ -14,7 +14,7 @@ const Homepage = () => {
     const [paramForSearch, setParamForSearch] = useState('title');
     
 
-    const [tempQuantity, setTempQuantity] = useState(0); // Локальное состояние для временного хранения количества книг в NumberBox
+    const [tempQuantity, setTempQuantity] = useState(1); // Локальное состояние для временного хранения количества книг в NumberBox
 
     const searchParam = [
         {id: 'author', text: 'Автор'},
@@ -60,7 +60,7 @@ const Homepage = () => {
         localStorage.setItem('cart', JSON.stringify(updatedCart));
 
         // Сбрасываем временное значение количества после добавления в корзину
-        setTempQuantity(0);
+        setTempQuantity(1);
     };
 
     const removeFromCart = (bookId) => {
