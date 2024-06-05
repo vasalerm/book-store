@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { SelectBox, Popup, Button, TextBox, NumberBox, FileUploader } from 'devextreme-react';
 import { Validator, RequiredRule } from 'devextreme-react/validator';
+import { Chart, Series, ArgumentAxis, Label, Tooltip } from 'devextreme-react/chart';
+
+
 
 const AdminPage = () => {
     const [authorData, setAuthorData] = useState([]);
@@ -15,7 +18,7 @@ const AdminPage = () => {
     const [coverImage, setCoverImage] = useState(''); // состояние для URL обложки
     const [isAuthorPopupVisible, setIsAuthorPopupVisible] = useState(false);
     const [isAddBookPopupVisible, setBookPopupVisible] = useState(false);
-
+    const [earningsData, setEarningsData] = useState([]);
     // Fetch authors data
     useEffect(() => {
         const fetchData = async () => {
@@ -120,6 +123,69 @@ const AdminPage = () => {
             console.error('Error submitting data:', error);
         }
     };
+    // Fetch earnings data
+    useEffect(() => {
+        const fetchEarnings = async () => {
+            try {
+                const period = 7; 
+                const response = await fetch('http://localhost/statistic.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ period: period })
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    const formattedData = data.map(item => ({
+                        date: item.date,
+                        earnings: parseInt(item.earnings) || 0
+                    }));
+                    setEarningsData(formattedData);
+                } else {
+                    throw new Error('Failed to fetch earnings data');
+                }
+            } catch (error) {
+                console.error('Error fetching earnings data:', error);
+            }
+        };
+    
+        fetchEarnings();
+    }, []);
+
+
+    const getStatisticByDays  = async (e) => {
+        const days = e.value.value;
+
+        try {
+           
+            const response = await fetch('http://localhost/statistic.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ period: days })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const formattedData = data.map(item => ({
+                    date: item.date,
+                    earnings: parseInt(item.earnings) || 0
+                }));
+                setEarningsData(formattedData);
+            } else {
+                throw new Error('Failed to fetch earnings data');
+            }
+        } catch (error) {
+            console.error('Error fetching earnings data:', error);
+        }
+        
+
+    }
+    
+
 
   
 
@@ -158,6 +224,37 @@ const AdminPage = () => {
             <Button text="Добавить книгу" onClick={() => handleSetBookPopupVisible(true)} />
             <p>Selected Author ID: {selectedAuthorId}</p>
             <Button text="Добавить автора" onClick={() => handleSetAuthorPopupVisible(true)} />
+            <SelectBox
+                width={150}
+                items={[
+                    { value: '7', text: 'Последние 7 дней' },
+                    { value: '14', text: 'Последние 14 дней' }
+                ]}
+                displayExpr="text"
+                onValueChanged={getStatisticByDays}
+            />
+            <Chart
+                dataSource={earningsData}
+                title="Объем продаж по датам"
+                id="chartContainer"
+            >
+                <ArgumentAxis>
+                    <Label wordWrap="breakWord" overlappingBehavior="rotate" rotationAngle={45} />
+                </ArgumentAxis>
+                <Series
+                    valueField="earnings"
+                    argumentField="date"
+                    type="bar"
+                    showInLegend={false}
+                    
+                >
+                    <Label visible={true}>
+                        <Tooltip enabled={true} />
+                    </Label>
+                </Series>
+            </Chart>
+
+
             <Popup
                 visible={isAddBookPopupVisible}
                 onHiding={() => handleSetBookPopupVisible(false)}

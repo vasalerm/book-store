@@ -213,3 +213,10 @@ nav ul li a:hover {
 .form-container button:hover {
   background-color: #0056b3;
 }
+
+
+#chartContainer {
+  width: 600px; /* Ширина диаграммы */
+  height: 400px; /* Высота диаграммы */
+  margin: 0 auto; /* Центрирование диаграммы */
+}
