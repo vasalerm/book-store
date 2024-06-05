@@ -11,7 +11,7 @@ const Homepage = () => {
         return savedCart ? JSON.parse(savedCart) : [];
     });
     const [searchText, setSearchText] = useState(null);
-    const [paramForSearch, setParamForSearch] = useState([]);
+    const [paramForSearch, setParamForSearch] = useState('title');
     
 
     const [tempQuantity, setTempQuantity] = useState(0); // Локальное состояние для временного хранения количества книг в NumberBox
