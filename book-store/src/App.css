@@ -175,13 +175,23 @@ nav ul li a:hover {
   background-color: #0056b3;
 }
 
-.search{
+.search {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Выравнивание по горизонтали */
+  align-items: center; /* Выравнивание по вертикали */
   width: 100%;
-  padding-bottom: 20px;
-  padding-top: 20px;
+  padding: 20px 0; /* Укоротил для удобства */
 }
+
+.search form {
+  display: flex;
+  align-items: center;
+}
+
+.search form Button {
+  width: 100px; /* Фиксированная ширина кнопок */
+}
+
 
 
 .form-container {

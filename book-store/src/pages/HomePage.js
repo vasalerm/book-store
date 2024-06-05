@@ -124,28 +124,37 @@ const Homepage = () => {
             <div className="search">
                 <form onSubmit={searchBook}>
                 
-                <TextBox
-                    placeholder="Поиск..."
-                    width={'500px'}
-                    onValueChange={(e) => setSearchText(e)}
-                />
-                <SelectBox
-                    dataSource={searchParam}
-                    displayExpr="text"
-                    valueExpr="id"
-                    defaultValue="title"
-                    onValueChange={(e) => {
-                        setParamForSearch(e)
-                    }}>
+                    <TextBox
+                        style={{marginRight: '5px'}}
+                        placeholder="Поиск..."
+                        width={'500px'}
+                        onValueChange={(e) => setSearchText(e)}
+                    />
+                    <SelectBox
+                        style={{marginRight: '5px'}}
+                        dataSource={searchParam}
+                        displayExpr="text"
+                        valueExpr="id"
+                        width={150}
+                        defaultValue="title"
+                        onValueChange={(e) => {
+                            setParamForSearch(e)
+                        }}>
 
-                </SelectBox>
-                <Button
-                
-                type="save"
-                useSubmitBehavior={true}>Поиск</Button> 
-                </form>
-                <Button
-                onClick={fetchBooks}>Сбросить</Button>
+                    </SelectBox>
+                    <Button
+                        style={{marginRight: '5px'}}
+                        width={100}
+                        type="save"
+                        useSubmitBehavior={true}>Поиск
+                    </Button> 
+                    <Button
+                        type="button"
+                        width={100}
+                        onClick={fetchBooks}>Сбросить
+                    </Button>
+                        </form>
+              
                 
             </div>
             <div className="book-list">
