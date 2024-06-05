@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { SelectBox, Popup, Button, TextBox, NumberBox, FileUploader } from 'devextreme-react';
 import { Validator, RequiredRule } from 'devextreme-react/validator';
 import { Chart, Series, ArgumentAxis, Label, Tooltip } from 'devextreme-react/chart';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -19,7 +20,45 @@ const AdminPage = () => {
     const [isAuthorPopupVisible, setIsAuthorPopupVisible] = useState(false);
     const [isAddBookPopupVisible, setBookPopupVisible] = useState(false);
     const [earningsData, setEarningsData] = useState([]);
+    const navigate = useNavigate();
     // Fetch authors data
+
+    useEffect(() => {
+        const fetchAccess = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    navigate("/authorization");
+                    return;
+                }
+
+                const response = await fetch('http://localhost/admin.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if(!data.access){
+                        navigate("/home");
+                    }
+                } else {
+                    navigate("/home");
+                }
+            } catch (error) {
+                console.error('Error fetching access:', error);
+                navigate("/home");
+                // В случае ошибки также устанавливаем доступ в false
+                // setAccess(false);
+            }
+        };
+
+        fetchAccess();
+    }, []);
     useEffect(() => {
         const fetchData = async () => {
             try {

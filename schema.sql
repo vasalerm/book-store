@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS roles (
   UNIQUE (id)
 );
 
- INSERT INTO roles (id, name) VALUES (1, 'Admin');
- INSERT INTO roles (id, name) VALUES (2, 'User');
+ INSERT INTO roles (id, name) VALUES (1, 'User');
+ INSERT INTO roles (id, name) VALUES (2, 'Admin');
 
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL NOT NULL,
