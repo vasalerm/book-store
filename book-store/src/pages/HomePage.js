@@ -164,20 +164,20 @@ const Homepage = () => {
                         <p>Автор: {`${book.author_first_name} ${book.author_middle_name || ''} ${book.author_last_name}`}</p>
                         <p>Цена: {book.price} ₽</p>
                         <p>Количество: {book.quantity - getCartQuantity(book.book_id)}</p>
-                        <div className='button'>
-                            <button onClick={() => addToCart(book)}>Добавить в корзину</button>
-                        </div>
+                       
                         <div className="cart-quantity">
                             <NumberBox
+                                width={100}
                                 max={book.quantity}
                                 value={tempQuantity} // Используем временное значение
-                                min={0}
+                                min={1}
                                 onValueChanged={(e) => updateTempQuantity(e.value)} // Обновляем временное значение при изменении
+                                
                             />
-                        </div>
-                        <div className='button'>
+                            <button onClick={() => addToCart(book)}>Добавить в корзину</button>
                             <button onClick={() => removeFromCart(book.book_id)}>Удалить из корзины</button>
                         </div>
+                       
                     </div>
                 ))}
             </div>
