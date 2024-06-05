@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {Button} from 'devextreme-react';
 import { DataGrid, Column, MasterDetail  } from 'devextreme-react/data-grid';
 
 const Profile = () => {
@@ -127,6 +128,12 @@ const Profile = () => {
                 <Column dataField="total_amount" caption="Сумма заказа" dataType="number" />
                 <MasterDetail enabled={false} autoExpandAll={true} render={renderDetail} />
             </DataGrid>
+            <Button onClick={() => {
+                localStorage.clear();
+                navigate("/authorization");
+                
+            }}>Выход</Button>
+
         </div>
     );
 };

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { NumberBox, Button} from 'devextreme-react'
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
+    const navigate = useNavigate();
 
     const calculateTotal = () => {
         return cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -19,26 +21,32 @@ const CartPage = () => {
     
 
     const handleOrder = async () => {
-        try {
-            const response = await fetch('http://localhost/orders.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ token: localStorage.getItem('token'), books: cart }),
-            });
+        const savedToken = localStorage.getItem('token');
+        if (!savedToken) {
+            navigate("/authorization");
+        }
+        else{
+            try {
+                const response = await fetch('http://localhost/orders.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token: localStorage.getItem('token'), books: cart }),
+                });
 
-            if (!response.ok) {
-                throw new Error('Failed to place order');
+                if (!response.ok) {
+                    throw new Error('Failed to place order');
+                }
+
+                // Очистка корзины
+                localStorage.removeItem('cart');
+                setCart([]);
+                alert('Заказ оформлен');
+            } catch (error) {
+                console.error('Error placing order:', error);
+                alert('Произошла ошибка при оформлении заказа');
             }
-
-            // Очистка корзины
-            localStorage.removeItem('cart');
-            setCart([]);
-            alert('Заказ оформлен');
-        } catch (error) {
-            console.error('Error placing order:', error);
-            alert('Произошла ошибка при оформлении заказа');
         }
     };
 
