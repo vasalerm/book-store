@@ -2,11 +2,13 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$host = 'localhost';
-$database = 'book-stock';
-$user = 'postgres';
-$password = 'qwerty';
-$port = 5433;
+$config = include('config.php');
+
+$host = $config['host'];
+$database = $config['database'];
+$user = $config['user'];
+$password = $config['password'];
+$port = $config['port'];
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$database", $user, $password);

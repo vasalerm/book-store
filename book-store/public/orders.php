@@ -10,11 +10,13 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
     exit();
 }
 
-$host = 'localhost'; // Адрес сервера
-$database = 'book-stock'; // Имя базы данных
-$user = 'postgres'; // Имя пользователя
-$password = 'qwerty'; // Пароль
-$port = 5433; // Нестандартный порт
+$config = include('config.php');
+
+$host = $config['host'];
+$database = $config['database'];
+$user = $config['user'];
+$password = $config['password'];
+$port = $config['port'];
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$database", $user, $password);

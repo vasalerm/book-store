@@ -4,12 +4,13 @@ header("Access-Control-Allow-Methods: DELETE, OPTIONS, POST, GET");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-$host = 'localhost'; // адрес сервера 
-$database = 'book-stock'; // имя базы данных
-$user = 'postgres'; // имя пользователя
-$password = 'qwerty'; // пароль
-$port = 5433; // Нестандартный порт
+$config = include('config.php');
 
+$host = $config['host'];
+$database = $config['database'];
+$user = $config['user'];
+$password = $config['password'];
+$port = $config['port'];
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$database", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
