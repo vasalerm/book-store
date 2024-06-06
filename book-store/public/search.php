@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Определяем SQL-запрос в зависимости от поля поиска
     if ($search_field === 'author') {
         $sql = "
             SELECT 

@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-    $token = bin2hex(random_bytes(16)); // Генерация уникального токена
+    $token = bin2hex(random_bytes(16));
 
     try {
         $pdo->beginTransaction();

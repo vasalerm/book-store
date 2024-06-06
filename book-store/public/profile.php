@@ -4,7 +4,6 @@ header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
 
-// Разрешить запросы OPTIONS (предварительные запросы)
 if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
     http_response_code(200);
     exit();
@@ -31,14 +30,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($headers['Authorization'])) {
         $token = str_replace('Bearer ', '', $headers['Authorization']);
 
-        // Получение пользователя по токену
         $stmt = $pdo->prepare("SELECT first_name, last_name, email, phone FROM users WHERE token = :token");
         $stmt->bindParam(':token', $token);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
-            // Успешно найден пользователь по токену
             echo json_encode($user);
         } else {
             http_response_code(404);

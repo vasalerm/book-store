@@ -4,7 +4,6 @@ header("Access-Control-Allow-Methods: DELETE, OPTIONS, POST, GET");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
 
-// Разрешить запросы OPTIONS (предварительные запросы)
 if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
     http_response_code(200);
     exit();
@@ -29,19 +28,16 @@ try {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
 
-    // Извлекаем данные о заказе из запроса
     $token = $data['token'];
-    $books = $data['books']; // массив книг в заказе в формате [{book_id, book_name, author_first_name, author_middle_name, author_last_name, price, quantity}]
+    $books = $data['books'];
 
     try {
         $pdo->beginTransaction();
     
-        // Сначала добавляем запись о заказе в таблицу Orders
         $stmt = $pdo->prepare("INSERT INTO orders (token, time) VALUES (:token, NOW())");
         $stmt->execute(array(':token' => $token));
-        $orderId = $pdo->lastInsertId(); // Получаем ID только что добавленного заказа
+        $orderId = $pdo->lastInsertId(); 
     
-        // Проверяем наличие достаточного количества книг на складе перед уменьшением и добавляем записи о книгах в таблицу Order_details
         foreach ($books as $book) {
             $stmt = $pdo->prepare("SELECT quantity FROM stock WHERE books_id = :bookId");
             $stmt->execute(array(':bookId' => $book['book_id']));
@@ -51,11 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 throw new Exception("Недостаточно книг на складе");
             }
     
-            // Уменьшаем количество книг в таблице Stocks
             $stmt = $pdo->prepare("UPDATE stock SET quantity = quantity - :quantity WHERE books_id = :bookId");
             $stmt->execute(array(':quantity' => $book['quantity'], ':bookId' => $book['book_id']));
     
-            // Теперь добавляем запись о книге в таблицу Order_details с использованием полученного orderId
             $stmt = $pdo->prepare("INSERT INTO order_details (order_id, book_id, quantity) VALUES (:orderId, :bookId, :quantity)");
             $stmt->execute(array(':orderId' => $orderId, ':bookId' => $book['book_id'], ':quantity' => $book['quantity']));
         }
@@ -81,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $authHeader = $headers['Authorization'];
         $token = str_replace('Bearer ', '', $authHeader);
 
-        // Получение заказов пользователя по токену
         $stmt = $pdo->prepare("
             SELECT 
                 Orders.id AS order_id, 

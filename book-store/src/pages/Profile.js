@@ -19,7 +19,7 @@ const Profile = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${savedToken}` // Отправка токена в заголовке
+                    'Authorization': `Bearer ${savedToken}`
                 }
             })
             .then(response => {
@@ -39,7 +39,7 @@ const Profile = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${savedToken}` // Отправка токена в заголовке
+                    'Authorization': `Bearer ${savedToken}`
                 }
             })
             .then(response => {
@@ -60,8 +60,6 @@ const Profile = () => {
     }, [navigate]);
 
     const fetchOrderDetails = (orderId) => {
-        // Здесь делайте GET-запрос к серверу для получения данных о заказе по его ID
-        console.log(orderId)
         fetch(`http://localhost/order_detail.php?order_id=${orderId}`)
             .then(response => {
                 if (!response.ok) {
@@ -70,8 +68,7 @@ const Profile = () => {
                 return response.json();
             })
             .then(data => {
-                console.log(data)
-                setSelectedOrder(data); // Установка данных о заказе в состояние компонента
+                setSelectedOrder(data);
             })
             .catch(error => {
                 console.error('Error fetching order details:', error);

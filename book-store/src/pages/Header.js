@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../logo.png'; // Импортируем изображение
+import logo from '../logo.png';
 
 const Header = () => {
     return (
         <header>
             <nav>
                 <Link to="/home">
-                    <img src={logo} alt="Логотип" /> {/* Вставляем логотип */}
+                    <img src={logo} alt="Логотип" /> 
                 </Link>
                 <ul>
                     <li><Link to="/home">Главная</Link></li>

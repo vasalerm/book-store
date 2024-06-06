@@ -30,11 +30,10 @@ const RegistrationForm = () => {
       }
 
       if (response.status === 201) {
-        window.location.href = '/authorization'; // Перенаправление на страницу success
+        window.location.href = '/authorization';
       }
 
       const data = await response.json();
-      console.log(data); // Вывод ответа от PHP скрипта
     } catch (error) {
       console.error('Error:', error);
     }

@@ -32,14 +32,13 @@ const CartPage = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ token: savedToken, books: cart }), // Используем сохраненный токен и корзину
+                    body: JSON.stringify({ token: savedToken, books: cart }),
                 });
     
                 if (!response.ok) {
                     throw new Error('Failed to place order');
                 }
     
-                // Очистка корзины
                 localStorage.removeItem('cart');
                 setCart([]);
                 alert('Заказ оформлен');
@@ -52,13 +51,10 @@ const CartPage = () => {
     
 
     const updateQuantity = (bookId, newQuantity) => {
-        console.log(bookId)
-        console.log(newQuantity)
         const updatedCart = cart.map(item => {
             if (item.book_id === bookId) {
                 return { ...item, quantity: newQuantity };
             }
-            console.log(cart)
             return item;
         });
     

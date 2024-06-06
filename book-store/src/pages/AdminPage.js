@@ -18,14 +18,13 @@ const AdminPage = () => {
     const [bookQuantity, setBookQuantity] = useState(null);
     const [bookPrice, setBookPrice] = useState(null);
     const [bookCover, setBookCover] = useState(null);
-    const [coverImage, setCoverImage] = useState(''); // состояние для URL обложки
+    const [coverImage, setCoverImage] = useState('');
     const [isAuthorPopupVisible, setIsAuthorPopupVisible] = useState(false);
     const [isAddBookPopupVisible, setBookPopupVisible] = useState(false);
     const [earningsData, setEarningsData] = useState([]);
     const [days, setDays] = useState("7");
     const navigate = useNavigate();
     const [books, setBooks] = useState([]);
-    // Fetch authors data
 
     useEffect(() => {
         const fetchAccess = async () => {
@@ -56,13 +55,12 @@ const AdminPage = () => {
             } catch (error) {
                 console.error('Error fetching access:', error);
                 navigate("/home");
-                // В случае ошибки также устанавливаем доступ в false
-                // setAccess(false);
             }
         };
 
         fetchAccess();
     }, []);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -166,7 +164,7 @@ const AdminPage = () => {
             console.error('Error submitting data:', error);
         }
     };
-    // Fetch earnings data
+
     useEffect(() => {
         const fetchEarnings = async () => {
             try {
@@ -215,8 +213,6 @@ const AdminPage = () => {
         fetchBooks();
       }, []);
 
-
-
     const getStatisticByDays  = async (e) => {
         setDays(e.value)
        
@@ -247,14 +243,9 @@ const AdminPage = () => {
         }
         
 
-    }
-    
-
-
-  
+    }  
 
     const handleSubmitAuthorForm = async (e) => {
-        console.log('a')
         e.preventDefault();
         const authorData = {
             first_name: authorFirstName,
@@ -289,18 +280,23 @@ const AdminPage = () => {
             <Button text="Добавить автора" onClick={() => handleSetAuthorPopupVisible(true)} />
             <div className='statistic'>
                 <div className='selectBox'>
-                <SelectBox
-                    width={200}
-                    items={[
-                        { value: '7', text: 'Последние 7 дней' },
-                        { value: '14', text: 'Последние 14 дней' }
-                    ]}
-                    valueExpr={'value'}
-                    value={days}
-                    displayExpr="text"
-                    onValueChanged={getStatisticByDays}
-                    
-                />
+                    <div style={{ marginBottom: '10px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>
+                            Выберите период
+                        </label>
+                        <SelectBox
+                            id="daysSelectBox"
+                            width={200}
+                            items={[
+                                { value: '7', text: 'Последние 7 дней' },
+                                { value: '14', text: 'Последние 14 дней' }
+                            ]}
+                            valueExpr="value"
+                            value={days}
+                            displayExpr="text"
+                            onValueChanged={getStatisticByDays}
+                        />
+                    </div>
                 </div>
                 <div className="diagram">
                 <Chart
@@ -337,10 +333,10 @@ const AdminPage = () => {
                 </div>
             </div>
             
-            
-
-
             <Popup
+                title='Добавление новой книги'
+                width={500}
+                height={450}
                 visible={isAddBookPopupVisible}
                 onHiding={() => handleSetBookPopupVisible(false)}
             >
@@ -356,21 +352,29 @@ const AdminPage = () => {
                         placeholder='Название книги'
                     />
                     <div className='author'>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>
+                            Автор
+                        </label>
                         <SelectBox
                             width={150}
+                            placeholder='Автор'
                             displayExpr="value"
                             valueExpr="key"
                             dataSource={authorData}
                             onValueChange={handleAuthorChange}
-                        />
-                        
-                        
+                        />                        
+                        <label style={{ display: 'block', marginBottom: '5px' }}>
+                            Количество
+                        </label>
                         <NumberBox
                             onValueChanged={handleSetBookQuantity}
                             min={0}
                             showSpinButtons={true}
                             placeholder='Количество'
                         />
+                        <label style={{ display: 'block', marginBottom: '5px' }}>
+                            Цена
+                        </label>
                         <NumberBox
                             onValueChanged={handleSetBookPrice}
                             min={0}

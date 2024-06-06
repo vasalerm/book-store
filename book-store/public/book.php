@@ -41,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $book_id = $pdo->lastInsertId();
 
-        // Вставка данных о запасе
         $stmt = $pdo->prepare("INSERT INTO stock (books_id, price, quantity) VALUES (:books_id, :price, :quantity)");
         $stmt->bindParam(':books_id', $book_id);
         $stmt->bindParam(':price', $price);
