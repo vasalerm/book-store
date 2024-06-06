@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { SelectBox, Popup, Button, TextBox, NumberBox, FileUploader } from 'devextreme-react';
+import { SelectBox, Popup, Button, TextBox, NumberBox, FileUploader, DataGrid } from 'devextreme-react';
+import {SearchPanel } from 'devextreme-react/data-grid'
 import { Validator, RequiredRule } from 'devextreme-react/validator';
 import { Chart, Series, ArgumentAxis, Label, Tooltip } from 'devextreme-react/chart';
 import { useNavigate } from 'react-router-dom';
+import { Column } from 'devextreme-react/cjs/data-grid';
 
 
 
@@ -20,7 +22,9 @@ const AdminPage = () => {
     const [isAuthorPopupVisible, setIsAuthorPopupVisible] = useState(false);
     const [isAddBookPopupVisible, setBookPopupVisible] = useState(false);
     const [earningsData, setEarningsData] = useState([]);
+    const [days, setDays] = useState("7");
     const navigate = useNavigate();
+    const [books, setBooks] = useState([]);
     // Fetch authors data
 
     useEffect(() => {
@@ -193,9 +197,30 @@ const AdminPage = () => {
         fetchEarnings();
     }, []);
 
+    useEffect(() => {
+        const fetchBooks = async () => {
+          try {
+            const response = await fetch('http://localhost/book.php');
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            const data = await response.json();
+            
+            setBooks(data);
+          } catch (error) {
+            console.error('Error fetching books:', error);
+          }
+        };
+    
+        fetchBooks();
+      }, []);
+
+
 
     const getStatisticByDays  = async (e) => {
-        const days = e.value.value;
+        setDays(e.value)
+       
+        const days = e.value;
 
         try {
            
@@ -258,40 +283,59 @@ const AdminPage = () => {
     };
 
     return (
-        <div>
-            <h2>Admin Page</h2>
+        <div className="AdminPage">
+            <h2>Страница администрации</h2>
             <Button text="Добавить книгу" onClick={() => handleSetBookPopupVisible(true)} />
-            <p>Selected Author ID: {selectedAuthorId}</p>
             <Button text="Добавить автора" onClick={() => handleSetAuthorPopupVisible(true)} />
-            <SelectBox
-                width={150}
-                items={[
-                    { value: '7', text: 'Последние 7 дней' },
-                    { value: '14', text: 'Последние 14 дней' }
-                ]}
-                displayExpr="text"
-                onValueChanged={getStatisticByDays}
-            />
-            <Chart
-                dataSource={earningsData}
-                title="Объем продаж по датам"
-                id="chartContainer"
-            >
-                <ArgumentAxis>
-                    <Label wordWrap="breakWord" overlappingBehavior="rotate" rotationAngle={45} />
-                </ArgumentAxis>
-                <Series
-                    valueField="earnings"
-                    argumentField="date"
-                    type="bar"
-                    showInLegend={false}
+            <div className='statistic'>
+                <div className='selectBox'>
+                <SelectBox
+                    width={200}
+                    items={[
+                        { value: '7', text: 'Последние 7 дней' },
+                        { value: '14', text: 'Последние 14 дней' }
+                    ]}
+                    valueExpr={'value'}
+                    value={days}
+                    displayExpr="text"
+                    onValueChanged={getStatisticByDays}
                     
+                />
+                </div>
+                <div className="diagram">
+                <Chart
+                    dataSource={earningsData}
+                    title="Объем продаж по датам"
+                    id="chartContainer"
                 >
-                    <Label visible={true}>
-                        <Tooltip enabled={true} />
-                    </Label>
-                </Series>
-            </Chart>
+                    <ArgumentAxis>
+                        <Label wordWrap="breakWord" overlappingBehavior="rotate" rotationAngle={45} />
+                    </ArgumentAxis>
+                    <Series
+                        valueField="earnings"
+                        argumentField="date"
+                        type="bar"
+                        showInLegend={false}
+                    >
+                        <Label visible={true}>
+                            <Tooltip enabled={true} />
+                        </Label>
+                    </Series>
+                </Chart>
+                </div>
+                <DataGrid
+                    style={{marginTop: '20px'}}
+                    width={550}
+                    height={400}
+                    dataSource={books}>
+                        <SearchPanel visible={true} width={240} placeholder="Поиск" />
+                        <Column dataField="book_name" caption="Название книги" />
+                        <Column width={100} dataField='quantity' caption='Количество'/>
+                        
+                </DataGrid>
+            </div>
+            
+            
 
 
             <Popup

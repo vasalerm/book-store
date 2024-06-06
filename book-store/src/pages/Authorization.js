@@ -44,8 +44,8 @@ const Authorization = () => {
   };
 
   return (
-    <div>
-      <h2>Authorization</h2>
+    <div className='Authorization'>
+      <h2>Авторизация</h2>
       <form onSubmit={handleSubmit} className='form-container'>
         <input
           type="email"

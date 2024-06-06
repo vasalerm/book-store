@@ -241,8 +241,68 @@ nav ul li a:hover {
 }
 
 
+.Authorization h2{
+  display:flex;
+  justify-content: center;
+}
+
+.AdminPage{
+}
+
+.AdminPage h2{
+  display: flex;
+  justify-content: center;
+}
+
+.AdminPage .statistic{
+  margin-right: 20px;
+  display: flex;
+  justify-content: end;
+  flex-wrap: wrap;
+}
+
+.AdminPage .selectBox{
+  width: 100%;
+  display:flex;
+  justify-content: end;
+}
+
+
+
+
+
 #chartContainer {
-  width: 600px; /* Ширина диаграммы */
-  height: 400px; /* Высота диаграммы */
-  margin: 0 auto; /* Центрирование диаграммы */
+  width: 600px; 
+  height: 400px; 
+  margin: 0 auto; 
+}
+
+
+
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
+  font-family: 'Arial', sans-serif; 
+  margin: 10px 0; 
+}
+
+p {
+  color: #666;
+  font-family: 'Arial', sans-serif;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.75em;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.5em;
+  font-weight: bold;
 }
