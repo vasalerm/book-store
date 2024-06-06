@@ -83,7 +83,7 @@ const RegistrationForm = () => {
         required
       
       />
-      <button type="submit">Register</button>
+      <button type="submit">Зарегестрироваться</button>
     </form>
   );
 };
