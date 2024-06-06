@@ -154,29 +154,34 @@ const Homepage = () => {
                 </form>
             </div>
             <div className="book-list">
-                {books.map(book => (
-                    <div key={book.book_id} className="book-card">
-                        <h3>{book.book_name}</h3>
-                        <p>Автор: {`${book.author_first_name} ${book.author_middle_name || ''} ${book.author_last_name}`}</p>
-                        <p>Цена: {book.price} ₽</p>
-                        <p>Количество: {book.quantity - getCartQuantity(book.book_id)}</p>
-                        <div className="cart-quantity">
-                            <NumberBox
-                                width={150}
-                                height={50}
-                                showSpinButtons={true}
-                                max={book.quantity}
-                                value={quantities[book.book_id] || 1} // Используем значение из состояния
-                                min={1}
-                                onValueChanged={(e) => updateQuantity(book.book_id, e.value)} // Обновляем количество для конкретной книги
-                            />
-                            <div className="button">
-                                <button onClick={() => addToCart(book)}>Добавить в корзину</button>
-                                <button onClick={() => removeFromCart(book.book_id)}>Удалить из корзины</button>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+            {books.map(book => (
+    <div key={book.book_id} className="book-card">
+        <h3>{book.book_name}</h3>
+        <p>Автор: {`${book.author_first_name} ${book.author_middle_name || ''} ${book.author_last_name}`}</p>
+        <p>Цена: {book.price} ₽</p>
+        <p>Количество: {book.quantity - getCartQuantity(book.book_id)}</p>
+        <div className="cart-quantity">
+            <NumberBox
+                width={150}
+                height={50}
+                showSpinButtons={true}
+                max={book.quantity}
+                value={quantities[book.book_id] || 1}
+                min={1}
+                onValueChanged={(e) => updateQuantity(book.book_id, e.value)}
+            />
+            <div className="button">
+                <button
+                    disabled={book.quantity - getCartQuantity(book.book_id) === 0} // Блокируем кнопку, если количество равно 0
+                    onClick={() => addToCart(book)}
+                >
+                    Добавить в корзину
+                </button>
+                <button onClick={() => removeFromCart(book.book_id)}>Удалить из корзины</button>
+            </div>
+        </div>
+    </div>
+))}
             </div>
         </div>
     );
