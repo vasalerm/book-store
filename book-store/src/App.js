@@ -21,9 +21,11 @@ const App = () => {
     };
 
     return (
+        
         <BrowserRouter>
             <Header />
             <div className='app-container'>
+                
                 <Routes>
                     <Route path="/authorization" element={<AuthorizationPage />} />
                     <Route path="/registration" element={<RegistrationPage />} />
