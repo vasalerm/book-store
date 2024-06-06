@@ -10,6 +10,7 @@ import AdminPage from './pages/AdminPage';
 import HomePage from './pages/HomePage';
 import CartPage from './pages/CartPage';
 import Header from './pages/Header';
+import Footer from './pages/Footer'
 import Profile from './pages/Profile';
 
 const App = () => {
@@ -22,15 +23,18 @@ const App = () => {
     return (
         <BrowserRouter>
             <Header />
-            <Routes>
-                <Route path="/authorization" element={<AuthorizationPage />} />
-                <Route path="/registration" element={<RegistrationPage />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/home" element={<HomePage addToCart={addToCart} />} />
-                <Route path="/cart" element={<CartPage cart={cart} />} />
-                <Route path="/" element={<HomePage addToCart={addToCart} />} />
-                <Route path="/profile" element={<Profile />} />
-            </Routes>
+            <div className='app-container'>
+                <Routes>
+                    <Route path="/authorization" element={<AuthorizationPage />} />
+                    <Route path="/registration" element={<RegistrationPage />} />
+                    <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/home" element={<HomePage addToCart={addToCart} />} />
+                    <Route path="/cart" element={<CartPage cart={cart} />} />
+                    <Route path="/" element={<HomePage addToCart={addToCart} />} />
+                    <Route path="/profile" element={<Profile />} />
+                </Routes>
+            </div>
+            <Footer />
         </BrowserRouter>
     );
 };
