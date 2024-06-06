@@ -38,10 +38,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                FROM orders
                                JOIN order_details ON orders.id = order_details.order_id
                                JOIN stock ON order_details.book_id = stock.books_id
-                               WHERE time BETWEEN :lastDays AND :today
+                               WHERE time BETWEEN :lastDays AND :todayEnd
                                GROUP BY DATE(time)
                                ORDER BY DATE(time)");
-        $stmt->execute([':lastDays' => $lastDays->format('Y-m-d'), ':today' => $today->format('Y-m-d')]);
+        $stmt->execute([':lastDays' => $lastDays->format('Y-m-d 00:00:00'), ':todayEnd' => $today->format('Y-m-d 23:59:59')]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Заполняем пропущенные дни нулями
