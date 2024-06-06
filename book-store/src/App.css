@@ -163,7 +163,7 @@ nav ul li a:hover {
 }
 
 .cart-page {
-  max-width: 800px;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
 }
@@ -181,6 +181,7 @@ nav ul li a:hover {
 }
 
 .cart-page ul li {
+  width: 700px;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;

@@ -323,16 +323,18 @@ const AdminPage = () => {
                     </Series>
                 </Chart>
                 </div>
-                <DataGrid
-                    style={{marginTop: '20px'}}
-                    width={550}
-                    height={400}
-                    dataSource={books}>
-                        <SearchPanel visible={true} width={240} placeholder="Поиск" />
-                        <Column dataField="book_name" caption="Название книги" />
-                        <Column width={100} dataField='quantity' caption='Количество'/>
-                        
-                </DataGrid>
+                <div style={{width: '100%', display: 'flex',justifyContent: 'end'}}>
+                    <DataGrid
+                        style={{marginTop: '20px'}}
+                        width={550}
+                        height={400}
+                        dataSource={books}>
+                            <SearchPanel visible={true} width={240} placeholder="Поиск" />
+                            <Column dataField="book_name" caption="Название книги" />
+                            <Column width={100} dataField='quantity' caption='Количество'/>
+                            
+                    </DataGrid>
+                </div>
             </div>
             
             

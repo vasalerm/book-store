@@ -72,7 +72,7 @@ const CartPage = () => {
     return (
         <div className="cart-page">
             <h1>Корзина</h1>
-            <div style={{height: '1000px', overflowY: 'auto'}}>
+            <div style={{maxHeight: '1000px', overflowY: 'auto'}}>
                 <ul>
                     {cart.map(item => (
                         <li key={item.book_id}>
