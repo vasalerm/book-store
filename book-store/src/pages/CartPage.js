@@ -32,13 +32,13 @@ const CartPage = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ token: localStorage.getItem('token'), books: cart }),
+                    body: JSON.stringify({ token: savedToken, books: cart }), // Используем сохраненный токен и корзину
                 });
-
+    
                 if (!response.ok) {
                     throw new Error('Failed to place order');
                 }
-
+    
                 // Очистка корзины
                 localStorage.removeItem('cart');
                 setCart([]);
@@ -49,6 +49,7 @@ const CartPage = () => {
             }
         }
     };
+    
 
     const updateQuantity = (bookId, newQuantity) => {
         console.log(bookId)

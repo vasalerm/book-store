@@ -34,7 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $pdo->beginTransaction();
     
-        // Проверяем наличие достаточного количества книг на складе перед уменьшением
+        // Сначала добавляем запись о заказе в таблицу Orders
+        $stmt = $pdo->prepare("INSERT INTO orders (token, time) VALUES (:token, NOW())");
+        $stmt->execute(array(':token' => $token));
+        $orderId = $pdo->lastInsertId(); // Получаем ID только что добавленного заказа
+    
+        // Проверяем наличие достаточного количества книг на складе перед уменьшением и добавляем записи о книгах в таблицу Order_details
         foreach ($books as $book) {
             $stmt = $pdo->prepare("SELECT quantity FROM stock WHERE books_id = :bookId");
             $stmt->execute(array(':bookId' => $book['book_id']));
@@ -47,12 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Уменьшаем количество книг в таблице Stocks
             $stmt = $pdo->prepare("UPDATE stock SET quantity = quantity - :quantity WHERE books_id = :bookId");
             $stmt->execute(array(':quantity' => $book['quantity'], ':bookId' => $book['book_id']));
-            
-            // Добавляем запись о книге в таблицу Order_details
-            // Сначала добавляем запись о заказе в таблицу Orders
-            $stmt = $pdo->prepare("INSERT INTO orders (token, time) VALUES (:token, NOW())");
-            $stmt->execute(array(':token' => $token));
-            $orderId = $pdo->lastInsertId(); // Получаем ID только что добавленного заказа
     
             // Теперь добавляем запись о книге в таблицу Order_details с использованием полученного orderId
             $stmt = $pdo->prepare("INSERT INTO order_details (order_id, book_id, quantity) VALUES (:orderId, :bookId, :quantity)");
@@ -71,8 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         http_response_code(400);
         echo json_encode(array("error" => $e->getMessage()));
     }
-    
 }
+
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $headers = getallheaders();
