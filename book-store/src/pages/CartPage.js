@@ -71,26 +71,29 @@ const CartPage = () => {
     return (
         <div className="cart-page">
             <h1>Корзина</h1>
-            <ul>
-                {cart.map(item => (
-                    <li key={item.book_id}>
-                        <h3>{item.book_name}</h3>
-                        <p>Автор: {`${item.author_first_name} ${item.author_middle_name || ''} ${item.author_last_name}`}</p>
-                        <p>Цена: {item.price} ₽</p>
-                        <NumberBox
-                            min={0}
-                            showSpinButtons={true}
-                            value={item.quantity}
-                            onValueChange={(e) => {
-                                updateQuantity(item.book_id, e)
-                            }                        
-                                
-                            }
-                        ></NumberBox>
-                         <Button onClick={() => removeItem(item.book_id)}>Удалить</Button>
-                    </li>
-                ))}
-            </ul>
+            <div style={{height: '1000px', overflowY: 'auto'}}>
+                <ul>
+                    {cart.map(item => (
+                        <li key={item.book_id}>
+                            <h3>{item.book_name}</h3>
+                            <p>Автор: {`${item.author_first_name} ${item.author_middle_name || ''} ${item.author_last_name}`}</p>
+                            <p>Цена: {item.price} ₽</p>
+                            <NumberBox
+                                width={100}
+                                min={0}
+                                showSpinButtons={true}
+                                value={item.quantity}
+                                onValueChange={(e) => {
+                                    updateQuantity(item.book_id, e)
+                                }                        
+                                    
+                                }
+                            ></NumberBox>
+                            <Button onClick={() => removeItem(item.book_id)}>Удалить</Button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
             <p>Итого: {calculateTotal()} ₽</p>
             <button onClick={handleOrder}>Оформить заказ</button>
         </div>
