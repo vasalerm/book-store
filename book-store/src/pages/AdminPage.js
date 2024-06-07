@@ -35,7 +35,7 @@ const AdminPage = () => {
                     return;
                 }
 
-                const response = await fetch('http://localhost/admin.php', {
+                const response = await fetch('http://cv32565.tw1.ru/admin.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ const AdminPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost/author.php');
+                const response = await fetch('http://cv32565.tw1.ru/author.php');
                 if (response.ok) {
                     const data = await response.json();
                     const formattedAuthors = data.authors.map(author => ({
@@ -146,7 +146,7 @@ const AdminPage = () => {
         };
 
         try {
-            const response = await fetch('http://localhost/book.php', {
+            const response = await fetch('http://cv32565.tw1.ru/book.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -169,7 +169,7 @@ const AdminPage = () => {
         const fetchEarnings = async () => {
             try {
                 const period = 7; 
-                const response = await fetch('http://localhost/statistic.php', {
+                const response = await fetch('http://cv32565.tw1.ru/statistic.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -198,7 +198,7 @@ const AdminPage = () => {
     useEffect(() => {
         const fetchBooks = async () => {
           try {
-            const response = await fetch('http://localhost/book.php');
+            const response = await fetch('http://cv32565.tw1.ru/book.php');
             if (!response.ok) {
               throw new Error('Network response was not ok ' + response.statusText);
             }
@@ -220,7 +220,7 @@ const AdminPage = () => {
 
         try {
            
-            const response = await fetch('http://localhost/statistic.php', {
+            const response = await fetch('http://cv32565.tw1.ru/statistic.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -254,7 +254,7 @@ const AdminPage = () => {
         };
 
         try {
-            const response = await fetch('http://localhost/author.php', {
+            const response = await fetch('http://cv32565.tw1.ru/author.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

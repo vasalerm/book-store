@@ -13,7 +13,7 @@ $password = $config['password'];
 $port = $config['port'];
 
 try {
-    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$database", $user, $password);
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$database", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     http_response_code(500);

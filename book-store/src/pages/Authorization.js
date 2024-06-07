@@ -17,7 +17,7 @@ const Authorization = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost/authorization.php', {
+      const response = await fetch('http://cv32565.tw1.ru/authorization.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

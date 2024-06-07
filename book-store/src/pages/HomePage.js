@@ -20,7 +20,7 @@ const Homepage = () => {
 
     const fetchBooks = () => {
         setLoading(true);
-        fetch('http://localhost/book.php')
+        fetch('http://cv32565.tw1.ru/book.php')
           .then(response => {
             if (!response.ok) {
               throw new Error('Network response was not ok ' + response.statusText);
@@ -95,7 +95,7 @@ const Homepage = () => {
             body: JSON.stringify(searchData)
         };
     
-        fetch('http://localhost/search.php', requestOptions)
+        fetch('http://cv32565.tw1.ru/search.php', requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);

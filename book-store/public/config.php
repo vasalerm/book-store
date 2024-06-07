@@ -1,9 +1,9 @@
 <?php
 return [
     'host' => 'localhost',
-    'database' => 'book-stock',
-    'user' => 'postgres',
+    'database' => 'cv32565_book',
+    'user' => 'cv32565_book',
     'password' => 'qwerty',
-    'port' => 5433
+    'port' => 5432
 ];
 ?>

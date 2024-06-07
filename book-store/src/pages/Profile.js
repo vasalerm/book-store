@@ -15,7 +15,7 @@ const Profile = () => {
         if (!savedToken) {
             navigate("/authorization");
         } else {
-            fetch('http://localhost/profile.php', {
+            fetch('http://cv32565.tw1.ru/profile.php', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ const Profile = () => {
                 console.error('Error fetching profile:', error);
             });
 
-            fetch('http://localhost/orders.php', {
+            fetch('http://cv32565.tw1.ru/orders.php', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const Profile = () => {
     }, [navigate]);
 
     const fetchOrderDetails = (orderId) => {
-        fetch(`http://localhost/order_detail.php?order_id=${orderId}`)
+        fetch(`http://cv32565.tw1.ru/order_detail.php?order_id=${orderId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -130,6 +130,10 @@ const Profile = () => {
                 navigate("/authorization");
                 
             }}>Выход</Button>
+            <Button onClick={() => {
+                navigate("/admin");
+                
+            }}>Админ</Button>
 
         </div>
     );

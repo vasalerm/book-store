@@ -13,7 +13,7 @@ $password = $config['password'];
 $port = $config['port'];
 
 try {
-    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$database", $user, $password);
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$database", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     http_response_code(500);
@@ -46,9 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             JOIN authors ON books.authors_id = authors.id 
             JOIN stock ON books.id = stock.books_id
             WHERE 
-                authors.first_name ILIKE :search_query OR 
-                authors.middle_name ILIKE :search_query OR 
-                authors.last_name ILIKE :search_query
+                LOWER(authors.first_name) LIKE LOWER(:search_query) OR 
+                LOWER(authors.middle_name) LIKE LOWER(:search_query) OR 
+                LOWER(authors.last_name) LIKE LOWER(:search_query)
         ";
     } elseif ($search_field === 'title') {
         $sql = "
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             JOIN authors ON books.authors_id = authors.id 
             JOIN stock ON books.id = stock.books_id
             WHERE 
-                books.name ILIKE :search_query
+                LOWER(books.name) LIKE LOWER(:search_query)
         ";
     } else {
         http_response_code(400);

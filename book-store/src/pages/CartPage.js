@@ -27,7 +27,7 @@ const CartPage = () => {
         }
         else{
             try {
-                const response = await fetch('http://localhost/orders.php', {
+                const response = await fetch('http://cv32565.tw1.ru/orders.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
