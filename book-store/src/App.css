@@ -73,6 +73,12 @@ body, html, #root {
   text-align: center;
 }
 
+.book-card .cart-quantity {
+  display: flex;
+  align-items: center;
+  margin-top: auto; /* Прижимает блок к низу карточки */
+}
+
 
 .book-card button {
   background-color: #007bff;
